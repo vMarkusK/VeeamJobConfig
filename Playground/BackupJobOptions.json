@@ -1,0 +1,193 @@
+{
+    "BackupStorageOptions":  {
+                                 "CheckRetention":  true,
+                                 "RetainCycles":  14,
+                                 "KeepFirstFullBackup":  false,
+                                 "RetainDays":  14,
+                                 "EnableDeletedVmDataRetention":  false,
+                                 "CompressionLevel":  5,
+                                 "EnableDeduplication":  true,
+                                 "StgBlockSize":  3,
+                                 "EnableIntegrityChecks":  true,
+                                 "EnableFullBackup":  true,
+                                 "BackupIsAttached":  false,
+                                 "StorageEncryptionEnabled":  false
+                             },
+    "BackupTargetOptions":  {
+                                "Algorithm":  2,
+                                "FullBackupScheduleKind":  0,
+                                "FullBackupDays":  [
+                                                       0
+                                                   ],
+                                "FullBackupMonthlyScheduleOptions":  {
+                                                                         "DayOfWeek":  1,
+                                                                         "DayNumberInMonth":  1,
+                                                                         "Months":  "January February March April May June July August September October November December"
+                                                                     },
+                                "TransformFullToSyntethic":  false,
+                                "TransformIncrementsToSyntethic":  false,
+                                "TransformToSyntethicDays":  [
+                                                                 6
+                                                             ]
+                            },
+    "JobOptions":  {
+                       "SourceProxyAutoDetect":  true,
+                       "TargetProxyAutoDetect":  true,
+                       "RunManually":  true,
+                       "UseWan":  false,
+                       "BackupCopyJobCanRunAnyTime":  true,
+                       "ThrottleBackupAgent":  false
+                   },
+    "NotificationOptions":  {
+                                "SnmpNotification":  false,
+                                "SendEmailNotification2AdditionalAddresses":  false,
+                                "EmailNotificationAdditionalAddresses":  "",
+                                "UseCustomEmailNotificationOptions":  false,
+                                "EmailNotificationSubject":  "[%JobResult%] %JobName% (%VmCount% VMs) %Issues%",
+                                "EmailNotifyOnSuccess":  true,
+                                "EmailNotifyOnWarning":  true,
+                                "EmailNotifyOnError":  true,
+                                "EmailNotifyOnLastRetryOnly":  true,
+                                "EmailNotifyOnWaitingTape":  true
+                            },
+    "JobScriptCommand":  {
+                             "PostCommand":  {
+                                                 "Periodicity":  0,
+                                                 "Enabled":  false,
+                                                 "CommandLine":  "",
+                                                 "Frequency":  1,
+                                                 "Days":  "Saturday"
+                                             },
+                             "PreCommand":  {
+                                                "Periodicity":  0,
+                                                "Enabled":  false,
+                                                "CommandLine":  "",
+                                                "Frequency":  1,
+                                                "Days":  "Saturday"
+                                            },
+                             "Periodicity":  0,
+                             "PostScriptEnabled":  false,
+                             "PostScriptCommandLine":  "",
+                             "PreScriptEnabled":  false,
+                             "PreScriptCommandLine":  "",
+                             "Frequency":  1,
+                             "Days":  [
+                                          6
+                                      ]
+                         },
+    "ViSourceOptions":  {
+                            "EncryptLanTraffic":  false,
+                            "FailoverToNetworkMode":  false,
+                            "VCBMode":  "san",
+                            "VDDKMode":  "san;nbd",
+                            "UseChangeTracking":  true,
+                            "EnableChangeTracking":  true,
+                            "VMToolsQuiesce":  false,
+                            "VmAttributeName":  "Notes",
+                            "BackupTemplates":  true,
+                            "ExcludeSwapFile":  true,
+                            "DirtyBlocksNullingEnabled":  true,
+                            "BackupTemplatesOnce":  true,
+                            "SetResultsToVmNotes":  false,
+                            "VmNotesAppend":  true
+                        },
+    "GenerationPolicy":  {
+                             "EnableDeletedVmDataRetention":  false,
+                             "DeletedVmsDataRetentionPeriodDays":  30,
+                             "RecoveryPointObjectiveValue":  1,
+                             "RecoveryPointObjectiveUnit":  2,
+                             "SyncIntervalStartTime":  {
+                                                           "Ticks":  0,
+                                                           "Days":  0,
+                                                           "Hours":  0,
+                                                           "Milliseconds":  0,
+                                                           "Minutes":  0,
+                                                           "Seconds":  0,
+                                                           "TotalDays":  0,
+                                                           "TotalHours":  0,
+                                                           "TotalMilliseconds":  0,
+                                                           "TotalMinutes":  0,
+                                                           "TotalSeconds":  0
+                                                       },
+                             "RetentionPolicyType":  1,
+                             "KeepGfsBackup":  false,
+                             "SimpleRetentionRestorePoints":  7,
+                             "EnableCompactFull":  false,
+                             "EnableCompactFullLastTime":  null,
+                             "CompactFullBackupScheduleKind":  1,
+                             "CompactFullBackupDays":  [
+                                                           6
+                                                       ],
+                             "CompactFullBackupMonthlyScheduleOptions":  {
+                                                                             "DayOfWeek":  6,
+                                                                             "DayNumberInMonth":  5,
+                                                                             "Months":  "January February March April May June July August September October November December"
+                                                                         },
+                             "EnableRechek":  false,
+                             "RecheckScheduleKind":  1,
+                             "RecheckDays":  [
+                                                 5
+                                             ],
+                             "RecheckBackupMonthlyScheduleOptions":  {
+                                                                         "DayOfWeek":  5,
+                                                                         "DayNumberInMonth":  5,
+                                                                         "Months":  "January February March April May June July August September October November December"
+                                                                     },
+                             "GFSRecentPoints":  7,
+                             "GFSWeeklyBackups":  4,
+                             "GFSMonthlyBackups":  0,
+                             "GFSQuarterlyBackups":  0,
+                             "GFSYearlyBackups":  0,
+                             "GFSIsReadEntireRestorePoint":  false,
+                             "WeeklyBackupDayOfWeek":  0,
+                             "MonthlyBackup":  {
+                                                   "Kind":  1,
+                                                   "DayOfWeek":  "Veeam.Backup.Model.CDomDayWeek",
+                                                   "DayOfMonth":  "1"
+                                               },
+                             "QuarterlyBackup":  {
+                                                     "Kind":  1,
+                                                     "DayOfWeek":  "Veeam.Backup.Model.CDomDayWeek",
+                                                     "DayOfQuarter":  "Veeam.Backup.Model.CDomDayMonth"
+                                                 },
+                             "YearlyBackup":  {
+                                                  "Kind":  1,
+                                                  "DayOfWeek":  "Veeam.Backup.Model.CDomDayWeek",
+                                                  "DayOfYear":  "Veeam.Backup.Model.CDomDayMonth"
+                                              },
+                             "IsGfsActiveFullEnabled":  false,
+                             "ActualRetentionRestorePoints":  7
+                         },
+    "SanIntegrationOptions":  {
+                                  "UseSanSnapshots":  true,
+                                  "MultipleStorageSnapshotEnabled":  true,
+                                  "MultipleStorageSnapshotVmsCount":  10,
+                                  "FailoverFromSan":  true,
+                                  "Failover2StorageSnapshotBackup":  true,
+                                  "SanSnapshotBackupTransferEnabled":  false,
+                                  "SanSnapshotBackupTransferRetention":  14,
+                                  "SanSnapshotBackupBackupSource":  false,
+                                  "SanSnapshotReplicaTransferEnabled":  false,
+                                  "SanSnapshotReplicaTransferRetention":  14,
+                                  "SanSnapshotReplicaBackupSource":  false,
+                                  "SanSnapshotSourceEnabled":  false,
+                                  "SanSnapshotSourceRetention":  14,
+                                  "NimbleSnapshotSourceEnabled":  false,
+                                  "NimbleSnapshotSourceRetention":  14,
+                                  "PublicPluginSnapshotSourceEnabled":  false,
+                                  "PublicPluginSnapshotSourceRetention":  14,
+                                  "NimbleSnapshotTransferEnabled":  false,
+                                  "NimbleSnapshotTransferRetention":  14,
+                                  "NimbleSnapshotTransferAsBackupSource":  false,
+                                  "HpPersistentPeerEnabled":  false,
+                                  "HpPersistentPeerBackupSource":  false
+                              },
+    "SqlLogBackupOptions":  {
+                                "StorageIntervalValue":  1,
+                                "StorageIntervalUnit":  1,
+                                "BackupIntervalValue":  3,
+                                "BackupIntervalUnit":  0,
+                                "RetentionType":  1,
+                                "DailyRetentionDays":  14
+                            }
+}
