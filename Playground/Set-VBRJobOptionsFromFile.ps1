@@ -11,11 +11,17 @@ function Set-VBRJobOptionsFromFile {
 
     begin {
         if (Test-Path $ReferenceFile) {
-            $JsonConfig = Get-Content -Raw -Path $ConfigFile | ConvertFrom-Json
-            $RefBackupStorageOptions = $JsonConfig.BackupStorageOptions
-            #$RefBackupTargetOptions  = $JsonConfig.BackupTargetOptions
-            $RefJobOptions = $JsonConfig.JobOptions
-            $RefNotificationOptions = $JsonConfig.NotificationOptions
+            $JsonConfig = Get-Content -Raw -Path $ReferenceFile | ConvertFrom-Json
+            if ($JsonConfig) {
+                $RefBackupStorageOptions = $JsonConfig.BackupStorageOptions
+                #$RefBackupTargetOptions  = $JsonConfig.BackupTargetOptions
+                $RefJobOptions = $JsonConfig.JobOptions
+                $RefNotificationOptions = $JsonConfig.NotificationOptions   
+            }
+            else {
+                Throw "No Valid Reference File Config"
+            }
+            
         }
         else {
             Throw "Reference File not Found"
