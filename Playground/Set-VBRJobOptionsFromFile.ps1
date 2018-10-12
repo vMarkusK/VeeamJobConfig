@@ -6,17 +6,32 @@ function Set-VBRJobOptionsFromFile {
             [Veeam.Backup.Core.CBackupJob]$BackupJob,
         [Parameter(Mandatory=$true, ValueFromPipeline=$false)]
         [ValidateNotNullorEmpty()]
-            [String]$ReferenceFile
+            [String]$ReferenceFile,
+        [Parameter(Mandatory=$false, ValueFromPipeline=$false)]
+            [Switch]$BackupStorageOptions,
+        [Parameter(Mandatory=$false, ValueFromPipeline=$false)]
+            [Switch]$JobOptions,
+        [Parameter(Mandatory=$false, ValueFromPipeline=$false)]
+            [Switch]$NotificationOptions
+        
     )
 
     begin {
         if (Test-Path $ReferenceFile) {
             $JsonConfig = Get-Content -Raw -Path $ReferenceFile | ConvertFrom-Json
             if ($JsonConfig) {
-                $RefBackupStorageOptions = $JsonConfig.BackupStorageOptions
+                if ($BackupStorageOptions) {
+                    $RefBackupStorageOptions = $JsonConfig.BackupStorageOptions    
+                }
                 #$RefBackupTargetOptions  = $JsonConfig.BackupTargetOptions
-                $RefJobOptions = $JsonConfig.JobOptions
-                $RefNotificationOptions = $JsonConfig.NotificationOptions   
+                if ($JobOptions) {
+                    $RefJobOptions = $JsonConfig.JobOptions   
+                }
+                if ($NotificationOptions) {
+                    $RefNotificationOptions = $JsonConfig.NotificationOptions       
+                }
+             
+                
             }
             else {
                 Throw "No Valid Reference File Config"
@@ -31,44 +46,68 @@ function Set-VBRJobOptionsFromFile {
 
     process {
         # Get the actual Job Options 
-        $JobOptions = $BackupJob.GetOptions()
-    
-        # Set the reference Job Options
-        ## BackupStorageOptions
         try {
-            $RefBackupStorageOptions.PSObject.Properties | ForEach-Object {
-            $JobOptions.BackupStorageOptions.$($_.Name) = $($_.Value)    
-            }
-        
+            "Get All Options from '$($BackupJob.Name)' ..."
+            $JobOptionsToUpdate = $BackupJob.GetOptions()   
         }
         catch {
-            Throw "Section 'BackupStorageOptions' Failed!"
+            Throw "Get All Backup Job Options Failed"   
+        }
+         
+        # Set the reference Job Options
+        ## BackupStorageOptions
+        if ($BackupStorageOptions) {
+            try {
+                "Set Backup-Storage Options ..."
+                $RefBackupStorageOptions.PSObject.Properties | ForEach-Object {
+                $JobOptionsToUpdate.BackupStorageOptions.$($_.Name) = $($_.Value)    
+                }
+            
+            }
+            catch {
+                Throw "Section 'BackupStorageOptions' Failed!"
+            }
         }
         
         ## JobOptions
-        try {
-            $RefJobOptions.PSObject.Properties | ForEach-Object {
-            $JobOptions.JobOptions.$($_.Name) = $($_.Value)    
+        if ($JobOptions) {
+            try {
+                "Set Job Options ..."
+                $RefJobOptions.PSObject.Properties | ForEach-Object {
+                $JobOptionsToUpdate.JobOptions.$($_.Name) = $($_.Value)    
+                }
+            
             }
-        
-        }
-        catch {
-            Throw "Section 'JobOptions' Failed!"
+            catch {
+                Throw "Section 'JobOptions' Failed!"
+            }
         }
         
         ## NotificationOptions
-        try {
-            $RefNotificationOptions.PSObject.Properties | ForEach-Object {
-            $JobOptions.NotificationOptions.$($_.Name) = $($_.Value)    
-        
+        if ($NotificationOptions) {
+            try {
+                "Set Notification Options ..."
+                $RefNotificationOptions.PSObject.Properties | ForEach-Object {
+                $JobOptionsToUpdate.NotificationOptions.$($_.Name) = $($_.Value)    
+            
+                }
             }
+            catch {
+                Throw "Section 'NotificationOptions' Failed!"
+            }
+            
         }
-        catch {
-            Throw "Section 'NotificationOptions' Failed!"
-        }
-        
         # Update Job Options
-        Set-VBRJobOptions $VeeamJob $JobOptions
+        try {
+            "Update All Options for '$($BackupJob.Name)' ..."
+            $Trash = Set-VBRJobOptions $VeeamJob $JobOptionsToUpdate  
+
+            }
+            catch {
+                Throw "Update All Options Failed!"
+            }
+            
+        
         
     }
     
