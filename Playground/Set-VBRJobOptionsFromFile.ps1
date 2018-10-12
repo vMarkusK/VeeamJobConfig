@@ -12,7 +12,9 @@ function Set-VBRJobOptionsFromFile {
         [Parameter(Mandatory=$false, ValueFromPipeline=$false)]
             [Switch]$JobOptions,
         [Parameter(Mandatory=$false, ValueFromPipeline=$false)]
-            [Switch]$NotificationOptions
+            [Switch]$NotificationOptions,
+        [Parameter(Mandatory=$false, ValueFromPipeline=$false)]
+            [Switch]$ViSourceOptions
         
     )
 
@@ -29,6 +31,10 @@ function Set-VBRJobOptionsFromFile {
                 }
                 if ($NotificationOptions) {
                     $RefNotificationOptions = $JsonConfig.NotificationOptions       
+                }
+                #JobScriptCommand
+                if ($ViSourceOptions) {
+                    $RefViSourceOptions = $JsonConfig.ViSourceOptions       
                 }
              
                 
@@ -97,6 +103,21 @@ function Set-VBRJobOptionsFromFile {
             }
             
         }
+
+        ## ViSourceOptions
+        if ($ViSourceOptions) {
+            try {
+                "Set ViSourceOptions Options ..."
+                $RefViSourceOptions.PSObject.Properties | ForEach-Object {
+                $JobOptionsToUpdate.ViSourceOptions.$($_.Name) = $($_.Value)    
+            
+                }
+            }
+            catch {
+                Throw "Section 'ViSourceOptions' Failed!"
+            }
+            
+        }
         # Update Job Options
         try {
             "Update All Options for '$($BackupJob.Name)' ..."
@@ -105,7 +126,8 @@ function Set-VBRJobOptionsFromFile {
             }
             catch {
                 Throw "Update All Options Failed!"
-            }  
+            } 
+         
         
     }
     
