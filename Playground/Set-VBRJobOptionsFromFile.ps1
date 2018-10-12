@@ -105,9 +105,7 @@ function Set-VBRJobOptionsFromFile {
             }
             catch {
                 Throw "Update All Options Failed!"
-            }
-            
-        
+            }  
         
     }
     
