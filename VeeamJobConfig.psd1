@@ -70,13 +70,13 @@ NestedModules = @(  'functions/Set-VBRJobOptionsFromRef.psm1',
 FunctionsToExport = 'Set-VBRJobOptionsFromRef', 'Set-VBRJobOptionsFromFile'
 
 # Aus diesem Modul zu exportierende Cmdlets
-CmdletsToExport = '*'
+#CmdletsToExport = '*'
 
 # Die aus diesem Modul zu exportierenden Variablen
-VariablesToExport = '*'
+#VariablesToExport = '*'
 
 # Aus diesem Modul zu exportierende Aliase
-AliasesToExport = '*'
+#AliasesToExport = '*'
 
 # Aus diesem Modul zu exportierende DSC-Ressourcen
 # DscResourcesToExport = @()
