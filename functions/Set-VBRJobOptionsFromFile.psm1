@@ -16,7 +16,9 @@ function Set-VBRJobOptionsFromFile {
         [Parameter(Mandatory=$false, ValueFromPipeline=$false)]
             [Switch]$ViSourceOptions,
         [Parameter(Mandatory=$false, ValueFromPipeline=$false)]
-            [Switch]$SanIntegrationOptions
+            [Switch]$SanIntegrationOptions,
+        [Parameter(Mandatory=$false, ValueFromPipeline=$false)]
+            [Switch]$SqlLogBackupOptions
 
     )
 
@@ -39,8 +41,9 @@ function Set-VBRJobOptionsFromFile {
                 if ($SanIntegrationOptions) {
                     $RefSanIntegrationOptions = $JsonConfig.SanIntegrationOptions
                 }
-
-
+                if ($SqlLogBackupOptions) {
+                    $RefSqlLogBackupOptions = $JsonConfig.SqlLogBackupOptions
+                }
 
             }
             else {
@@ -133,6 +136,20 @@ function Set-VBRJobOptionsFromFile {
             }
             catch {
                 Throw "Section 'SanIntegrationOptions' Failed!"
+            }
+
+        }
+        ## SqlLogBackupOptions
+        if ($SqlLogBackupOptions) {
+            try {
+                "Set SqlLogBackupOptions Options ..."
+                $RefSqlLogBackupOptions.PSObject.Properties | ForEach-Object {
+                $JobOptionsToUpdate.SqlLogBackupOptions.$($_.Name) = $($_.Value)
+
+                }
+            }
+            catch {
+                Throw "Section 'SqlLogBackupOptions' Failed!"
             }
 
         }
