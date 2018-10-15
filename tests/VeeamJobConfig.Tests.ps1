@@ -107,6 +107,6 @@ Context 'Test Functions' {
 
     It 'Set-VBRJobOptionsFromFile'{
         {Remove-Module -Name VeeamJobConfig -Force:$true -ErrorAction SilentlyContinue; Import-Module  $moduleManifest } | Should Not Throw
-        {Get-VBRJob -Name "Backup Job 2" | Set-VBRJobOptionsFromFile -ReferenceFile "$moduleRoot/Playground\BackupJobOptions.json" -BackupStorageOptions -JobOptions -NotificationOptions -ViSourceOptions -SanIntegrationOptions -SqlLogBackupOptions} | Should Not Throw
+        {Get-VBRJob -Name "Backup Job 2" | Set-VBRJobOptionsFromFile -ReferenceFile "$moduleRoot/Playground/BackupJobOptions.json" -BackupStorageOptions -JobOptions -NotificationOptions -ViSourceOptions -SanIntegrationOptions -SqlLogBackupOptions} | Should Not Throw
     }
 }
