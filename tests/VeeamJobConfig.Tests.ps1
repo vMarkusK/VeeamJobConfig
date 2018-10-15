@@ -2,6 +2,25 @@ $moduleRoot = Resolve-Path "$PSScriptRoot\.."
 $moduleName = "VeeamJobConfig"
 $moduleManifest = "$moduleRoot\$moduleName.psd1"
 
+$EncryptedCred = "$env:LOCALAPPDATA\vscode-powershell\EncryptedVeeamCred.clixml"
+if (Test-Path -LiteralPath $EncryptedCred -ErrorAction SilentlyContinue) {
+    $Credentials = Import-CliXml $EncryptedCred
+}
+else {
+    $Credentials = Get-Credential
+    $Credentials | Export-CliXml "$env:LOCALAPPDATA\vscode-powershell\EncryptedVeeamCred.clixml"
+}
+
+$VeeamFqdn = "$env:LOCALAPPDATA\vscode-powershell\VeeamFqdn.txt"
+if (Test-Path -LiteralPath $VeeamFqdn) {
+    [String]$FQDN = Get-Content "$env:LOCALAPPDATA\vscode-powershell\VeeamFqdn.txt"
+}
+else {
+    [String]$FQDN = Read-Host -Prompt 'FQDN'
+    $FQDN | Out-File -FilePath "$env:LOCALAPPDATA\vscode-powershell\VeeamFqdn.txt"
+}
+
+
 Describe "General Code validation: $moduleName" {
 
     $scripts = Get-ChildItem $moduleRoot -Include *.psm1, *.ps1, *.psm1 -Recurse
@@ -72,4 +91,22 @@ Context 'Exported Functions' {
         $ExportedCount | Should be $FileCount
     }
 
+}
+
+Context 'Test Functions' {
+    Add-PSSnapin VeeamPssnapin
+    Disconnect-VBRServer -ErrorAction SilentlyContinue
+    Connect-VBRServer -Server $FQDN -Credential $Credentials
+
+    It 'Set-VBRJobOptionsFromRef'{
+        {Remove-Module -Name VeeamJobConfig -Force:$true -ErrorAction SilentlyContinue; Import-Module  $moduleManifest } | Should Not Throw
+        {$VeeamJob = Get-VBRJob -Name "Backup Job 2"} | Should Not Throw
+        {$VeeamRefJob = Get-VBRJob -Name "Backup Job 1"} | Should Not Throw
+        {Set-VBRJobOptionsFromRef -BackupJob $VeeamJob -ReferenceBackupJob $VeeamRefJob} | Should Not Throw
+    }
+
+    It 'Set-VBRJobOptionsFromFile'{
+        {Remove-Module -Name VeeamJobConfig -Force:$true -ErrorAction SilentlyContinue; Import-Module  $moduleManifest } | Should Not Throw
+        {Get-VBRJob -Name "Backup Job 2" | Set-VBRJobOptionsFromFile -ReferenceFile "$moduleRoot/Playground\BackupJobOptions.json" -BackupStorageOptions -JobOptions -NotificationOptions -ViSourceOptions -SanIntegrationOptions -SqlLogBackupOptions} | Should Not Throw
+    }
 }
