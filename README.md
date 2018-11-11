@@ -31,3 +31,7 @@ $VeeamRefJob = Get-VBRJob -Name "Backup Job 1"
 Set-VBRJobOptionsFromRef -BackupJob $VeeamJob -ReferenceBackupJob $VeeamRefJob
 ```
 ![Set-VBRJobOptionsFromRef](/media/Set-VBRJobOptionsFromRef.png)
+
+## Export-VbrJobOptionsToFile
+
+## Set-VBRJobOptionsFromFile

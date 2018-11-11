@@ -64,10 +64,11 @@ Description = 'Mass Configuration of Veeam Backup Jobs from Referense Job oder D
 
 # Die Module, die als geschachtelte Module des in "RootModule/ModuleToProcess" angegebenen Moduls importiert werden sollen.
 NestedModules = @(  'functions/Set-VBRJobOptionsFromRef.psm1',
-                    'functions/Set-VBRJobOptionsFromFile.psm1')
+                    'functions/Set-VBRJobOptionsFromFile.psm1',
+                    'functions/Export-VbrJobOptionsToFile')
 
 # Aus diesem Modul zu exportierende Funktionen
-FunctionsToExport = 'Set-VBRJobOptionsFromRef', 'Set-VBRJobOptionsFromFile'
+FunctionsToExport = 'Set-VBRJobOptionsFromRef', 'Set-VBRJobOptionsFromFile', 'Export-VbrJobOptionsToFile'
 
 # Aus diesem Modul zu exportierende Cmdlets
 #CmdletsToExport = '*'
