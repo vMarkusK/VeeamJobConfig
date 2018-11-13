@@ -156,7 +156,7 @@ function Set-VBRJobOptionsFromFile {
         # Update Job Options
         try {
             "Update All Options for '$($BackupJob.Name)' ..."
-            $Trash = Set-VBRJobOptions $VeeamJob $JobOptionsToUpdate
+            $Trash = Set-VBRJobOptions $BackupJob $JobOptionsToUpdate
 
             }
             catch {
