@@ -34,4 +34,13 @@ Set-VBRJobOptionsFromRef -BackupJob $VeeamJob -ReferenceBackupJob $VeeamRefJob
 
 ## Export-VbrJobOptionsToFile
 
+ ```PowerShell
+$TemplateBackupJob = Get-VBRJob -Name "Template Job 1"
+Export-VbrJobOptionsToFile -BackupJob $TemplateBackupJob -Path "C:\temp\ExampleJobOptions.json"
+```
+
 ## Set-VBRJobOptionsFromFile
+
+```PowerShell
+Get-VBRJob -Name "Backup Job*" | Set-VBRJobOptionsFromFile -ReferenceFile "C:\temp\ExampleJobOptions.json" -BackupStorageOptions
+```

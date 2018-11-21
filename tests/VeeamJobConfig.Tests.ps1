@@ -98,15 +98,20 @@ Context 'Test Functions' {
     Disconnect-VBRServer -ErrorAction SilentlyContinue
     Connect-VBRServer -Server $FQDN -Credential $Credentials
 
+    It 'Export-VbrJobOptionsToFile'{
+        {Remove-Module -Name VeeamJobConfig -Force:$true -ErrorAction SilentlyContinue; Import-Module  $moduleManifest } | Should Not Throw
+        {Get-VBRJob -Name "Backup Job 1" | Export-VbrJobOptionsToFile -Path  "$moduleRoot/TEMPBackupJobOptions.json" } | Should Not Throw
+    }
+
     It 'Set-VBRJobOptionsFromRef'{
         {Remove-Module -Name VeeamJobConfig -Force:$true -ErrorAction SilentlyContinue; Import-Module  $moduleManifest } | Should Not Throw
-        {$VeeamJob = Get-VBRJob -Name "Backup Job 2"} | Should Not Throw
-        {$VeeamRefJob = Get-VBRJob -Name "Backup Job 1"} | Should Not Throw
-        {Set-VBRJobOptionsFromRef -BackupJob $VeeamJob -ReferenceBackupJob $VeeamRefJob} | Should Not Throw
+        {$VeeamJob = Get-VBRJob -Name "Backup Job 2"; $VeeamRefJob = Get-VBRJob -Name "Backup Job 1"; Set-VBRJobOptionsFromRef -BackupJob $VeeamJob -ReferenceBackupJob $VeeamRefJob} | Should Not Throw
     }
 
     It 'Set-VBRJobOptionsFromFile'{
         {Remove-Module -Name VeeamJobConfig -Force:$true -ErrorAction SilentlyContinue; Import-Module  $moduleManifest } | Should Not Throw
-        {Get-VBRJob -Name "Backup Job 2" | Set-VBRJobOptionsFromFile -ReferenceFile "$moduleRoot/Playground/BackupJobOptions.json" -BackupStorageOptions -JobOptions -NotificationOptions -ViSourceOptions -SanIntegrationOptions -SqlLogBackupOptions} | Should Not Throw
+        {Get-VBRJob -Name "Backup Job 2" | Set-VBRJobOptionsFromFile -ReferenceFile "$moduleRoot/TEMPBackupJobOptions.json" -BackupStorageOptions -JobOptions -NotificationOptions -ViSourceOptions -SqlLogBackupOptions} | Should Not Throw
     }
+
+
 }

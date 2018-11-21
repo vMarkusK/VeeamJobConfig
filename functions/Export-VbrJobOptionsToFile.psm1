@@ -1,16 +1,33 @@
 function Export-VbrJobOptionsToFile {
+    <#
+    .SYNOPSIS
+    Exports the Veeam Backup Jobs Options to a JSON File
+
+    .DESCRIPTION
+    Exports the Veeam Backup Jobs Options to a JSON File.
+
+    .PARAMETER BackupJob
+    Veeam Backup Job
+
+    .PARAMETER Path
+    Path of the JSON file to export
+
+    .EXAMPLE
+    Export-VbrJobOptionsToFile -BackupJob $(Get-VBRJob -Name "Template Job 1") -Path "C:\temp\ExampleJobOptions.json"
+
+    .EXAMPLE
+    Get-VBRJob -Name "Template Job 1" | Export-VbrJobOptionsToFile -Path "C:\temp\ExampleJobOptions.json"
+
+    #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
+        [Parameter(Mandatory=$true, ValueFromPipeline=$true, HelpMessage="Veeam Backup Job")]
         [ValidateNotNullorEmpty()]
             [Veeam.Backup.Core.CBackupJob]$BackupJob,
-        [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
+        [Parameter(Mandatory=$true, ValueFromPipeline=$false, HelpMessage="Path of the JSON file to export")]
         [ValidateNotNullorEmpty()]
             [System.IO.FileInfo]$Path
     )
-
-    begin {
-    }
 
     process {
         $BackupJobOptions = $BackupJob.GetOptions()
@@ -20,6 +37,4 @@ function Export-VbrJobOptionsToFile {
         $Object | ConvertTo-Json | Out-File $Path
     }
 
-    end {
-    }
 }
